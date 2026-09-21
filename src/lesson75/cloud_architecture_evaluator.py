@@ -15,6 +15,9 @@ def audit_service_tier(workload_type: str, custom_os_needed: bool) -> str:
 
 def calulate_multiregion_budget(primary_cost:float, replication_rate: float= 0.8) -> float:
 # Calculates total multi-region disaster recovery budget including primary infrastructure and secondary warm-standby infrastructure.
+
+    # https://prices.azure.com/api/retail/prices
+
     estimated_budget = primary_cost + replication_rate
     return estimated_budget
 
