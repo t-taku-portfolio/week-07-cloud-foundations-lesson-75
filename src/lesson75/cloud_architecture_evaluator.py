@@ -45,8 +45,9 @@ def save_as_json(obj_dict: dict, target_dir: str) -> str:
 
     JAPAN_TOKYO = zoneinfo.ZoneInfo('Asia/Tokyo')
     timestamp = datetime.datetime.now(JAPAN_TOKYO).strftime('Y%_m%_d%')
+    obj_dict['timestamp'] = timestamp
 
-    file_path = Path(target_dir) / f'{timestamp}.json'
+    file_path = Path(target_dir) / 'architecture_report.json'
 
     try:
         with open(file_path, 'w') as f:
@@ -56,3 +57,6 @@ def save_as_json(obj_dict: dict, target_dir: str) -> str:
         raise
 
     return file_path
+
+
+__ini
