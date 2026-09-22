@@ -1,3 +1,9 @@
+import datetime
+import json
+import zoneinfo
+from pathlib import Path
+
+
 def audit_service_tier(workload_type: str, custom_os_needed: bool) -> str:
 # Recommends "IaaS", "PaaS", or "SaaS" based on customization and administrative needs.
 
@@ -34,6 +40,19 @@ def simulate_health_check(probe_response: list) -> bool:
     return (failure_count * 100 / len(probe_response)) > failure_rate_percent
 
 
-def save_json() -> str:
+def save_as_json(obj_dict: dict, target_dir: str) -> str:
 # Save the evaluation results as a formatted JSON report
-    return 'path'
+
+    JAPAN_TOKYO = zoneinfo.ZoneInfo('Asia/Tokyo')
+    timestamp = datetime.datetime.now(JAPAN_TOKYO).strftime('Y%_m%_d%')
+
+    file_path = Path(target_dir) / f'{timestamp}.json'
+
+    try:
+        with open(file_path, 'w') as f:
+            json.dump(obj= obj_dict, fp= f,indent= 4)
+    except FileNotFoundError:
+        print('Target directory is not found')
+        raise
+
+    return file_path
