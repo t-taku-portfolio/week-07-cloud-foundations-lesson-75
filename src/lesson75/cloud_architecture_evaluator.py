@@ -42,6 +42,7 @@ def simulate_health_check(probe_response: list) -> bool:
 
 def save_as_json(obj_dict: dict, target_dir: str) -> str:
 # Save the evaluation results as a formatted JSON report
+# Add timestamp automatically
 
     JAPAN_TOKYO = zoneinfo.ZoneInfo('Asia/Tokyo')
     timestamp = datetime.datetime.now(JAPAN_TOKYO).strftime('Y%_m%_d%')
@@ -59,4 +60,11 @@ def save_as_json(obj_dict: dict, target_dir: str) -> str:
     return file_path
 
 
-__ini
+if __name__ == '__main__':
+    obj_dict = {}
+
+    obj_dict['service_tier'] = audit_service_tier()
+    obj_dict['multiregion_budget'] = calulate_multiregion_budget()
+    obj_dict['isUnhealthy'] = simulate_health_check()
+
+    print(f'[DONE] Saved as JSON at {save_as_json()}')
