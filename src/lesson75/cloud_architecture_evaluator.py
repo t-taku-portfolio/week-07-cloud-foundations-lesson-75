@@ -23,7 +23,16 @@ def calulate_multiregion_budget(primary_cost: float, replication_rate: float= 0.
 
 def simulate_health_check(probe_response: list) -> bool:
 # Evaluates a list of HTTP status codes (e.g., [200, 200, 503]) and returns False if failure rate exceeds 30%.
-    return True
+
+    failure_rate_percent = 30
+    failure_count = 0
+
+    for status_code in probe_response:
+        if (type(status_code) is int) and (status_code > 400):
+            failure_count += 1
+
+    return (failure_count * 100 / len(probe_response)) > failure_rate_percent
+
 
 def save_json() -> str:
 # Save the evaluation results as a formatted JSON report
