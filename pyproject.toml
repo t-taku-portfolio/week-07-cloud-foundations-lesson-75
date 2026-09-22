@@ -7,9 +7,7 @@ authors = [
     { name = "t-taku-portfolio", email = "207686657+t-taku-portfolio@users.noreply.github.com" }
 ]
 requires-python = ">=3.14"
-dependencies = [
-    "requests>=2.34.2",
-]
+dependencies = []
 
 [project.scripts]
 lesson75 = "lesson75:main"
