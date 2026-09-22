@@ -30,14 +30,14 @@ def calulate_multiregion_budget(primary_cost: float, replication_rate: float= 0.
 def simulate_health_check(probe_response: list) -> bool:
 # Evaluates a list of HTTP status codes (e.g., [200, 200, 503]) and returns False if failure rate exceeds 30%.
 
-    failure_rate_percent = 30
+    failure_threshold_percent = 30
     failure_count = 0
 
     for status_code in probe_response:
         if (type(status_code) is int) and (status_code > 400):
             failure_count += 1
 
-    return (failure_count * 100 / len(probe_response)) > failure_rate_percent
+    return (failure_count * 100 / len(probe_response)) < failure_threshold_percent
 
 
 def save_as_json(obj_dict: dict, target_dir: str) -> str:
@@ -65,6 +65,6 @@ if __name__ == '__main__':
 
     obj_dict['service_tier'] = audit_service_tier()
     obj_dict['multiregion_budget'] = calulate_multiregion_budget()
-    obj_dict['isUnhealthy'] = simulate_health_check()
+    obj_dict['isHealthy'] = simulate_health_check()
 
     print(f'[DONE] Saved as JSON at {save_as_json()}')
