@@ -46,7 +46,7 @@ def save_as_json(obj_dict: dict, target_dir: str) -> str:
 
     # Add timestamp automatically
     JAPAN_TOKYO = zoneinfo.ZoneInfo('Asia/Tokyo')
-    timestamp = datetime.datetime.now(JAPAN_TOKYO).strftime('Y%_m%_d%')
+    timestamp = datetime.datetime.now(JAPAN_TOKYO).strftime('%Y_%m_%d')
     obj_dict['timestamp'] = timestamp
 
     if target_dir is None:
@@ -64,7 +64,6 @@ def save_as_json(obj_dict: dict, target_dir: str) -> str:
 
 
 if __name__ == '__main__':
-    obj_dict = {}
 
     # Create an argument parser and subparser object
     parser = argparse.ArgumentParser()
@@ -74,24 +73,30 @@ if __name__ == '__main__':
 
     # args are str and bool
     parser_audit = subparsers.add_parser('audit')
-    parser_audit.add_argument('workload_type', 'custom_os_needed', nargs= 2)
-    parser_audit.set_defaults(func=audit_service_tier)
+    parser_audit.add_argument('workload_type', type= str)
+    parser_audit.add_argument('custom_os_needed', type= lambda bool_str: bool_str.lower() == 'true')
+    parser_audit.set_defaults(func= audit_service_tier)
 
     # args are float and float
     parser_calculate = subparsers.add_parser('calculate')
-    parser_calculate.add_argument('primary_cost', 'replication_rate', type=float ,nargs= 2)
-    parser_calculate.set_defaults(func=calulate_multiregion_budget)
+    parser_calculate.add_argument('primary_cost', type= float)
+    parser_calculate.add_argument('replication_rate', type= float)
+    parser_calculate.set_defaults(func= calulate_multiregion_budget)
 
     # arg is a list of int
     parser_simulate = subparsers.add_parser('simulate')
-    parser_simulate.add_argument('probe_response', type= list, nargs= '+')
-    parser_simulate.set_defaults(func=simulate_health_check)
+    parser_simulate.add_argument('probe_response', type= int, nargs= '+')
+    parser_simulate.set_defaults(func= simulate_health_check)
 
     # Retrieve arguments from parser
     args = parser.parse_args()
 
-    # Process the result
-    json_dict = {f'{args.func.__name__}' : args.func(args)}
+    # Extend the args namespace as dict, and pop the func argument out from the dict
+    args_dict = vars(args).copy()
+    func = args_dict.pop('func')
 
-    # Save as JSON and show the path
-    print(f'[DONE] Saved as JSON at {save_as_json(json_dict)}')
+    # Process the result
+    json_dict = {f'{func.__name__}' : func(**args_dict)}
+
+    # Save as JSON and show the file's path
+    print(f'[DONE] Saved as JSON at {save_as_json(json_dict, None)}')
