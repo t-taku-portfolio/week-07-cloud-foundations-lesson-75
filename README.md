@@ -10,5 +10,5 @@ uv sync
 - requests
 
 ## Reference
-- [Microsoft Learn: Azure retail prices API](https://learn.microsoft.com/en-us/rest/api/cost-management/retail-prices/azure-retail-prices)
-- [Microsoft Learn: Filter using query in URL](https://learn.microsoft.com/en-us/power-bi/collaborate-share/service-url-filters)
+[Python docs: subprocess](https://docs.python.org/3/library/argparse.html#subcommands)
+[GeeksforGeeks: parseargs](https://www.geeksforgeeks.org/python/how-to-pass-a-list-as-a-command-line-argument-with-argparse/)

@@ -42,13 +42,15 @@ def simulate_health_check(probe_response: list) -> bool:
 
 
 def save_as_json(obj_dict: dict, target_dir: str) -> str:
-# Save the evaluation results as a formatted JSON report
-# Add timestamp automatically
+    # Save the evaluation results as a formatted JSON report
 
+    # Add timestamp automatically
     JAPAN_TOKYO = zoneinfo.ZoneInfo('Asia/Tokyo')
     timestamp = datetime.datetime.now(JAPAN_TOKYO).strftime('Y%_m%_d%')
     obj_dict['timestamp'] = timestamp
 
+    if target_dir is None:
+        target_dir = Path.cwd()
     file_path = Path(target_dir) / 'architecture_report.json'
 
     try:
@@ -64,16 +66,32 @@ def save_as_json(obj_dict: dict, target_dir: str) -> str:
 if __name__ == '__main__':
     obj_dict = {}
 
+    # Create an argument parser and subparser object
     parser = argparse.ArgumentParser()
-    parser.add_argument('function', 
-                        choices=['audit', 'calculate', 'simulate', 'save'], 
-                        help='chose the function to run')
+    subparsers = parser.add_subparsers(required= True)
+
+    # Have user choose a function from the choices
+
+    # args are str and bool
+    parser_audit = subparsers.add_parser('audit')
+    parser_audit.add_argument('workload_type', 'custom_os_needed', nargs= 2)
+    parser_audit.set_defaults(func=audit_service_tier)
+
+    # args are float and float
+    parser_calculate = subparsers.add_parser('calculate')
+    parser_calculate.add_argument('primary_cost', 'replication_rate', type=float ,nargs= 2)
+    parser_calculate.set_defaults(func=calulate_multiregion_budget)
+
+    # arg is a list of int
+    parser_simulate = subparsers.add_parser('simulate')
+    parser_simulate.add_argument('probe_response', type= list, nargs= '+')
+    parser_simulate.set_defaults(func=simulate_health_check)
+
+    # Retrieve arguments from parser
     args = parser.parse_args()
 
-    workload_type_arg, custom_os_needed_arg = args.audit
+    # Process the result
+    json_dict = {f'{args.func.__name__}' : args.func(args)}
 
-    obj_dict['service_tier'] = audit_service_tier(workload_type_arg, custom_os_needed_arg)
-    obj_dict['multiregion_budget'] = calulate_multiregion_budget()
-    obj_dict['isHealthy'] = simulate_health_check()
-
-    print(f'[DONE] Saved as JSON at {save_as_json()}')
+    # Save as JSON and show the path
+    print(f'[DONE] Saved as JSON at {save_as_json(json_dict)}')
