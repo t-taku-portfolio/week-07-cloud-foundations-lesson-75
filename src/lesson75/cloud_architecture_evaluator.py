@@ -1,3 +1,4 @@
+import argparse
 import datetime
 import json
 import zoneinfo
@@ -63,7 +64,15 @@ def save_as_json(obj_dict: dict, target_dir: str) -> str:
 if __name__ == '__main__':
     obj_dict = {}
 
-    obj_dict['service_tier'] = audit_service_tier()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('function', 
+                        choices=['audit', 'calculate', 'simulate', 'save'], 
+                        help='chose the function to run')
+    args = parser.parse_args()
+
+    workload_type_arg, custom_os_needed_arg = args.audit
+
+    obj_dict['service_tier'] = audit_service_tier(workload_type_arg, custom_os_needed_arg)
     obj_dict['multiregion_budget'] = calulate_multiregion_budget()
     obj_dict['isHealthy'] = simulate_health_check()
 
