@@ -9,7 +9,7 @@ uv sync
 ## Usage
 - Run audit_servive_tier method
 ```bash
-uv run python3 src/lesson75/cloud_architecture_evaluator.py audit [workload_type: str ] [custom_os_needed]
+uv run python3 src/lesson75/cloud_architecture_evaluator.py audit [workload_type: str ] [custom_os_needed: bool]
 ```
 
 - Run calulate_multiregion_budget method
@@ -26,5 +26,5 @@ uv run python3 src/lesson75/cloud_architecture_evaluator.py simulate [probe_resp
 - uv
 
 ## Reference
-[Python docs: subprocess](https://docs.python.org/3/library/argparse.html#subcommands)
-[GeeksforGeeks: parseargs](https://www.geeksforgeeks.org/python/how-to-pass-a-list-as-a-command-line-argument-with-argparse/)
+- [Python docs: subprocess](https://docs.python.org/3/library/argparse.html#subcommands)
+- [GeeksforGeeks: parseargs](https://www.geeksforgeeks.org/python/how-to-pass-a-list-as-a-command-line-argument-with-argparse/)
