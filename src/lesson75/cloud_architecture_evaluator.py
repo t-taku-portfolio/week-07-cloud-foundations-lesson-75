@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 def audit_service_tier(workload_type: str, custom_os_needed: bool) -> str:
-# Recommends "IaaS", "PaaS", or "SaaS" based on customization and administrative needs.
+    '''Recommends "IaaS", "PaaS", or "SaaS" based on customization and administrative needs'''
 
     paaS_workloads = ['api', 'web_app', 'managed_database', 'container']
     saas_workloads = ['email', 'crm', 'office_suite', 'monitoring_tool']
@@ -21,28 +21,28 @@ def audit_service_tier(workload_type: str, custom_os_needed: bool) -> str:
         return f'[ERROR] unknown workload type {workload_type}'
     
 
-def calulate_multiregion_budget(primary_cost: float, replication_rate: float= 0.8) -> float:
-# Calculates total multi-region disaster recovery budget including primary infrastructure and secondary warm-standby infrastructure.
+def calculate_multiregion_budget(primary_cost: float, replication_rate: float= 0.8) -> float:
+    '''Calculates total multi-region disaster recovery budget including primary infrastructure and secondary warm-standby infrastructure.'''
 
     estimated_budget = primary_cost * (1 + replication_rate)
     return estimated_budget
 
 
 def simulate_health_check(probe_response: list) -> bool:
-# Evaluates a list of HTTP status codes (e.g., [200, 200, 503]) and returns False if failure rate exceeds 30%.
+    '''Evaluates a list of HTTP status codes (e.g., [200, 200, 503]) and returns False if failure rate exceeds 30%.'''
 
     failure_threshold_percent = 30
     failure_count = 0
 
     for status_code in probe_response:
-        if (type(status_code) is int) and (status_code > 400):
+        if (status_code.isinstance(int)) and (status_code > 400):
             failure_count += 1
 
     return (failure_count * 100 / len(probe_response)) < failure_threshold_percent
 
 
 def save_as_json(obj_dict: dict, target_dir: str) -> str:
-    # Save the evaluation results as a formatted JSON report
+    '''Save the evaluation results as a formatted JSON report'''
 
     # Add timestamp automatically
     JAPAN_TOKYO = zoneinfo.ZoneInfo('Asia/Tokyo')
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     parser_calculate = subparsers.add_parser('calculate')
     parser_calculate.add_argument('primary_cost', type= float)
     parser_calculate.add_argument('replication_rate', type= float)
-    parser_calculate.set_defaults(func= calulate_multiregion_budget)
+    parser_calculate.set_defaults(func= calculate_multiregion_budget)
 
     # arg is a list of int
     parser_simulate = subparsers.add_parser('simulate')
