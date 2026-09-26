@@ -8,12 +8,12 @@ from pathlib import Path
 def audit_service_tier(workload_type: str, custom_os_needed: bool) -> str:
     '''Recommends "IaaS", "PaaS", or "SaaS" based on customization and administrative needs'''
 
-    paaS_workloads = ['api', 'web_app', 'managed_database', 'container']
+    paas_workloads = ['api', 'web_app', 'managed_database', 'container']
     saas_workloads = ['email', 'crm', 'office_suite', 'monitoring_tool']
 
     if custom_os_needed:
         return 'IaaS'
-    elif workload_type.lower() in paaS_workloads:
+    elif workload_type.lower() in paas_workloads:
         return 'PaaS'
     elif workload_type.lower() in saas_workloads:
         return 'SaaS'
